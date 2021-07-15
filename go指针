@@ -1,0 +1,21 @@
+package main
+
+import (
+	"fmt"
+)
+
+func main() {
+	a := 200
+	fmt.Println(&a)
+	b := &a // b指向变量a的地址
+	c := *b // c代表b指针指向的变量
+  c++  // 变量值加1
+	fmt.Println(c)
+	fmt.Println(a)
+	fmt.Println(b)
+}
+
+
+参考资料：
+https://www.jianshu.com/p/63f3bfb58687
+https://learnku.com/go/t/35168
