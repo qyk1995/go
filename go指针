@@ -16,6 +16,12 @@ func main() {
 }
 
 
+输出：
+0xc000012068
+201
+200
+0xc000012068
+
 参考资料：
 https://www.jianshu.com/p/63f3bfb58687
 https://learnku.com/go/t/35168
