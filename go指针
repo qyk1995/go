@@ -22,6 +22,29 @@ func main() {
 200
 0xc000012068
 
+
+
+package main
+
+import ("fmt")  // 导入内置 fmt 
+
+func main(){  // main函数，是程序执行的入口
+
+	var i1 = 5
+	var intp *int // 定义为指针类型，
+	fmt.Println(&i1)
+	intp = &i1
+	*intp = 4
+	fmt.Println(intp,*intp,i1) //在指针类型前面加上 * 号（前缀）来获取指针所指向的内容
+}
+输出：
+0xc000012088
+0xc000012088 4 4
+
+
+
+
+
 参考资料：
 https://www.jianshu.com/p/63f3bfb58687
 https://learnku.com/go/t/35168
