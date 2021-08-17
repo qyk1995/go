@@ -42,6 +42,42 @@ func main(){  // main函数，是程序执行的入口
 0xc000012088 4 4
 
 
+package main
+
+import ("fmt")  // 导入内置 fmt 
+
+
+type Twots struct {
+	a int
+	b int
+
+}
+
+
+func main(){  // main函数，是程序执行的入口
+	var a int = 20
+	var b int = 304
+
+	swap(&a, &b)
+	fmt.Println(a)
+
+	fmt.Println(b)
+}
+
+func  swap(x, y *int) {
+	var tmp int
+	tmp = *x // 将x 赋值 tmp
+	fmt.Println(tmp)
+	*x = *y // 将y 赋值 x
+	*y = tmp
+	
+}
+
+输出：
+20 
+304
+20
+
 
 
 
