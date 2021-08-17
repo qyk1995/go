@@ -1,7 +1,32 @@
 
 
+不仅仅struct有方法，比如int、float32等也有方法
+package main
+
+import ("fmt")  // 导入内置 fmt 
 
 
+type interge int
+
+
+func (b interge) print() { 
+	fmt.Println(b)
+
+}
+
+
+func (b *interge) change() { 
+	*b = *b + 1
+
+}
+
+
+func main(){  // main函数，是程序执行的入口
+	var i interge = 10
+	i.print()
+	i.change()
+	i.print()
+}
 
 
 
