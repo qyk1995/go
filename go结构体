@@ -1,1 +1,8 @@
-结构体在内存是连续的
+1、结构体在内存是连续的
+2、两个结构体进行字段转换时，但是个数以及名字类型要一样
+3、在结构体上的每个字段加上tag,tag通过反射机制获取。常见场景在序列化和反序列化。
+type Info struct {
+	Major        string `json:"major"` // 首字母大写 对外暴露此子段，但是进行返回的json为字母为大写，需要加上`json:"major"`将返回的json 转为小写字母。 反射
+ 	Minor        string `json:"minor"`
+
+}
