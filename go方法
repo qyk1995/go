@@ -1,0 +1,46 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+package main
+
+import ("fmt")  // 导入内置 fmt 
+
+
+type Twots struct {
+	a int
+	b int
+
+}
+func main(){  // main函数，是程序执行的入口
+	var tw Twots
+	tw.a = 1
+	tw.b = 24
+	we := tw.AddThem()	
+	fmt.Println(we)
+}
+
+
+func (tn Twots) AddThem() int { //值类型，
+	tn.a = 23 
+	return tn.a + tn.b //23 + 24
+}
+
+
+输出：
+47
