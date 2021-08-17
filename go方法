@@ -44,3 +44,37 @@ func (tn Twots) AddThem() int { //值类型，
 
 输出：
 47
+
+
+
+
+
+package main
+
+import ("fmt")  // 导入内置 fmt 
+
+
+type Twots struct {
+	a int
+	b int
+
+}
+
+
+func (b *Twots) change() { 
+	b.a = 34
+
+}
+func main(){  // main函数，是程序执行的入口
+	tw := new(Twots) 
+	tw.a = 1
+	tw.b = 23
+	tw.change()	
+	fmt.Println(tw.a) // a输出为34，会发生变化，因为传入的是指针（内存地址）
+}
+输出：
+34
+
+
+
+
