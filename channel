@@ -1,0 +1,84 @@
+
+
+
+// channel 是引用类型，必须初始化之后才能写入数据，即make之后才能使用
+
+协程：本质是一种用户态线程，不需要操作系统来抢占式调度，且在真正的实现中寄存于线程中，因为系统图开销极小，可以有效提高线程的任务并发性，
+channel 是进程内的通信方式。需要跨进程间通信，建议使用分布式系统的方式解决。
+
+
+
+
+
+//计算出8000以内的素数
+
+package main
+
+import (
+	"fmt"
+	"time"
+)
+
+
+// 写入8000个数据
+
+func putNum(intChan chan int) {
+	for i := 1; i <= 8000; i++ {
+		intChan <- i
+	}
+	close(intChan)
+}
+
+func primeNum(intChan chan int, primeChan chan int, exitChan chan bool) {
+	var flag bool
+
+	for {
+		time.Sleep(time.Millisecond * 10)
+		num, ok := <-intChan
+		fmt.Println(num)
+		fmt.Println(ok)
+		if !ok {
+			break
+		}
+		flag = true
+		for i := 2; i < num; i++ {
+			if num%i == 0 {
+				flag = false
+				break
+			}
+		}
+		if flag {
+			primeChan <- num
+		}
+
+	}
+	exitChan <- true
+
+}
+func main() {
+	intChan := make(chan int, 1000)
+	primeChan := make(chan int, 2000)
+	exitChan := make(chan bool, 4)
+	go putNum(intChan)
+	for i := 0; i < 4; i++ {
+		go primeNum(intChan, primeChan, exitChan)
+
+	}
+
+	go func() {
+		for i := 0; i < 4; i++ {
+			<-exitChan
+		}
+		close(primeChan)
+	}()
+
+	for {
+		res, ok := <-primeChan
+		if !ok {
+			break
+		}
+		fmt.Printf("素数=%d\n", res)
+
+	}
+
+}
