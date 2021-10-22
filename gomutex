@@ -5,6 +5,49 @@ import (
     "sync"
 )
 
+func main() {
+    var mu sync.Mutex
+    var conut = 0
+    // 等待所有goroutine执行完毕
+    var wg sync.WaitGroup
+    wg.Add(10)
+
+    for i := 0; i < 10; i++ {
+        go func() {
+            defer wg.Done()
+            for j := 0; j < 100000; j++ {
+                mu.Lock()
+                conut++
+                mu.Unlock()
+            }
+        }()
+    }
+    wg.Wait()
+    fmt.Println(conut)
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+package main
+
+import (
+    "fmt"
+    "sync"
+)
+
 type Counter struct {
     sync.Mutex
     Count uint
