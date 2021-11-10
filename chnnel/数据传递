@@ -27,7 +27,8 @@ func main() {
 	// 创建4个worker
 	for i := 0; i < 4; i++ {
 		fmt.Println(i)
-		go newWorker(i, chs[i], chs[(i+1)%4]) //每个goroutine从chs获得的chan，第一个goroutine 取第一个chan,第二个goroutine取第二个chan
+		go newWorker(i, chs[i], chs[(i+1)%4]) //每个goroutine从chs获得的chan，第一个goroutine 取第一个chan,第二个goroutine取第二个chan 以此类推。
+		// chan 如果为空，那么，receiver 接收数据的时候就会阻塞等待，直到 chan 被关闭或者有新的数据到来
 	}
 
 	//首先把令牌交给第一个worker
