@@ -1,0 +1,77 @@
+遍历string：
+  for range 对于 string 类型来说，每次循环得到的 v 值是一个 Unicode 字符码点，也就是 rune 类型值，而不是一个字节，
+返回的第一个值 i 为该 Unicode 字符码点的内存编码（UTF-8）的第一个字节在字符串内存序列中的位置。
+
+带label的遍历：
+    带 label 的 continue 语句或者break语句，通常出现于嵌套循环语句中，被用于跳转到外层循环并继续执行 外层循环语句的下一个迭代或者直接中断外层循环。
+    
+var gold = 38
+
+func main() {
+    var sl = [][]int{
+        {1, 34, 26, 35, 78},
+        {3, 45, 13, 24, 99},
+        {101, 13, 38, 7, 127},
+        {54, 27, 40, 83, 81},
+    }
+
+outerloop:
+    for i := 0; i < len(sl); i++ {
+        for j := 0; j < len(sl[i]); j++ {
+            if sl[i][j] == gold {
+                fmt.Printf("found gold at [%d, %d]\n", i, j)
+                break outerloop
+            }
+        }
+    }
+}
+    
+
+坑一： for range goroutine 
+
+func main() {
+    var m = []int{1, 2, 3, 4, 5}  
+             
+    {
+      i, v := 0, 0
+        for i, v = range m {
+            go func() {
+                time.Sleep(time.Second * 3)
+                fmt.Println(i, v) // 每次打印值都相同
+            }()
+        }
+    }
+
+    time.Sleep(time.Second * 10)
+}
+
+i, v 值在整个循环过程中是重用的，仅有一份。在 for range 循环结束后，i = 4, v = 5，因此各个 Goroutine 在等待 3 秒后进行输出的时候，输出的是 i, v 的最终值。
+
+
+坑二:遍历数组时。 参与 for range 循环的是 range 表达式的副本
+    
+    
+func main() {
+    var a = [5]int{1, 2, 3, 4, 5}
+    var r [5]int
+
+    fmt.Println("original a =", a)
+
+    for i, v := range a {
+        if i == 0 {
+            a[1] = 12
+            a[2] = 13
+        }
+        r[i] = v
+    }
+
+    fmt.Println("after for range loop, r =", r)
+    fmt.Println("after for range loop, a =", a)
+}
+
+这个例子中，每次迭代的都是从数组 a 的值拷贝 a’中得到的元素。a’是 Go 临时分配的连续字节序列，与 a 完全不是一块内存区域。因此无论 a 被如何修改，它参与循环的副本 a’依旧保持原值，
+因此 v 从 a’中取出的仍旧是 a 的原值，而不是修改后的值。
+
+坑三：遍历 map 中元素的随机性 
+    如果我们在循环的过程中，对 map 进行了修改，那么这样修改的结果是否会影响后续迭代呢？这个结果和我们遍历 map 一样，具有随机性。
+
